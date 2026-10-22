@@ -414,6 +414,7 @@ import {
 } from "../viewport";
 import { ElementCanvasButtons } from "../components/ElementCanvasButtons";
 import { LaserTrails } from "../laserTrails";
+import { AnnotationTrails } from "../annotationTrails";
 import { withBatchedUpdates, withBatchedUpdatesThrottled } from "../reactUtils";
 import { isPointHittingTextAutoResizeHandle } from "../textAutoResizeHandle";
 import { textWysiwyg } from "../wysiwyg/textWysiwyg";
@@ -714,6 +715,8 @@ class App extends React.Component<AppProps, AppState> {
 
   drawShape = new AppDrawShape(this);
   laserTrails = new LaserTrails(this);
+  annotationTrails = new AnnotationTrails(this);
+  private annotationPointerId: number | null = null;
   eraserTrail = new EraserTrail(this);
   lassoTrail = new LassoTrail(this);
   cursorHints = new CursorHints(this);
@@ -1029,6 +1032,7 @@ class App extends React.Component<AppProps, AppState> {
     }
     return (
       this.state.activeTool.type === "laser" ||
+      this.state.activeTool.type === "annotation" ||
       this.state.activeTool.type === "custom"
     );
   }
@@ -2459,6 +2463,7 @@ class App extends React.Component<AppProps, AppState> {
                           <SVGLayer
                             trails={[
                               this.laserTrails,
+                              this.annotationTrails,
                               this.lassoTrail,
                               this.eraserTrail,
                               this.drawShape.trail,
@@ -2649,7 +2654,16 @@ class App extends React.Component<AppProps, AppState> {
                             onClick={this.handleCanvasClick}
                             onPointerMove={this.handleCanvasPointerMove}
                             onPointerUp={this.handleCanvasPointerUp}
-                            onPointerCancel={this.removePointer}
+                            onPointerCancel={(event) => {
+                              this.removePointer(event);
+                              if (
+                                this.annotationPointerId === event.pointerId
+                              ) {
+                                this.missingPointerEventCleanupEmitter.trigger(
+                                  event.nativeEvent,
+                                );
+                              }
+                            }}
                             onTouchMove={this.handleTouchMove}
                             onPointerDown={this.handleCanvasPointerDown}
                             onDoubleClick={this.handleCanvasDoubleClick}
@@ -3023,6 +3037,11 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     this.store.scheduleAction(actionResult.captureUpdate);
+
+    if (actionResult.replaceFiles) {
+      // File/image scene imports replace the scene, unlike ordinary updates.
+      this.annotationTrails.clear();
+    }
 
     let didUpdate = false;
 
@@ -3437,6 +3456,7 @@ class App extends React.Component<AppProps, AppState> {
    */
   private resetScene = withBatchedUpdates(
     (opts?: { resetLoadingState: boolean }) => {
+      this.annotationTrails.clear();
       this.scene.replaceAllElements([]);
       this.setState((state) => ({
         ...getDefaultAppState(),
@@ -3808,6 +3828,7 @@ class App extends React.Component<AppProps, AppState> {
     this.removeEventListeners();
     this.library.destroy();
     this.laserTrails.stop();
+    this.annotationTrails.stop();
     this.drawShape.stop();
     this.eraserTrail.stop();
     this.onChangeEmitter.clear();
@@ -4096,6 +4117,24 @@ class App extends React.Component<AppProps, AppState> {
 
     this.handleInteractionStateChange(prevProps, prevState);
     this.handleForcedToolChange(prevProps, prevState);
+
+    if (
+      this.state.activeTool.type !== "annotation" ||
+      !this.isToolSupported("annotation")
+    ) {
+      this.annotationTrails.cancelPath();
+    }
+    if (
+      prevState.scrollX !== this.state.scrollX ||
+      prevState.scrollY !== this.state.scrollY ||
+      prevState.zoom !== this.state.zoom ||
+      prevState.offsetLeft !== this.state.offsetLeft ||
+      prevState.offsetTop !== this.state.offsetTop ||
+      prevState.width !== this.state.width ||
+      prevState.height !== this.state.height
+    ) {
+      this.annotationTrails.render();
+    }
 
     this.appStateObserver.flush(prevState);
 
@@ -5222,6 +5261,8 @@ class App extends React.Component<AppProps, AppState> {
       }
 
       if (elements) {
+        // Hosts replacing a scene use resetScene() first, just as they do to
+        // reset history. Ordinary element updates must preserve annotations.
         this.scene.replaceAllElements(elements);
       }
 
@@ -5815,7 +5856,7 @@ class App extends React.Component<AppProps, AppState> {
     if (event.key === KEYS.SPACE) {
       if (
         (this.state.viewModeEnabled &&
-          this.state.activeTool.type !== "laser") ||
+          !oneOf(this.state.activeTool.type, ["laser", "annotation"])) ||
         this.state.openDialog?.name === "elementLinkSelector"
       ) {
         this.cursor.set(CURSOR_TYPE.GRAB);
@@ -8350,7 +8391,7 @@ class App extends React.Component<AppProps, AppState> {
     this.maybeCleanupAfterMissingPointerUp(event.nativeEvent);
     // laser pointer is a presentation aid, not an edit — using it while
     // following someone shouldn't break follow
-    if (this.state.activeTool.type !== "laser") {
+    if (!oneOf(this.state.activeTool.type, ["laser", "annotation"])) {
       this.requestUnfollow();
     }
 
@@ -8734,6 +8775,12 @@ class App extends React.Component<AppProps, AppState> {
       this.createFrameElementOnPointerDown(
         pointerDownState,
         this.state.activeTool.type,
+      );
+    } else if (this.state.activeTool.type === "annotation") {
+      this.annotationPointerId = event.pointerId;
+      this.annotationTrails.startPath(
+        pointerDownState.lastCoords.x,
+        pointerDownState.lastCoords.y,
       );
     } else if (this.state.activeTool.type === "laser") {
       this.laserTrails.startPath(
@@ -10478,7 +10525,22 @@ class App extends React.Component<AppProps, AppState> {
   private onPointerMoveFromPointerDownHandler(
     pointerDownState: PointerDownState,
   ) {
+    const isAnnotation = this.state.activeTool.type === "annotation";
     return withBatchedUpdatesThrottled((event: PointerEvent) => {
+      if (isAnnotation) {
+        if (
+          this.state.activeTool.type !== "annotation" ||
+          !this.isToolSupported("annotation") ||
+          gesture.pointers.size > 1 ||
+          isHoldingSpace
+        ) {
+          this.annotationTrails.cancelPath();
+        } else {
+          const point = viewportCoordsToSceneCoords(event, this.state);
+          this.annotationTrails.addPointToPath(point.x, point.y);
+        }
+        return;
+      }
       if (this.state.openDialog?.name === "elementLinkSelector") {
         return;
       }
@@ -11406,6 +11468,7 @@ class App extends React.Component<AppProps, AppState> {
   private onPointerUpFromPointerDownHandler(
     pointerDownState: PointerDownState,
   ): (event: PointerEvent) => void {
+    const isAnnotation = this.state.activeTool.type === "annotation";
     return withBatchedUpdates((childEvent: PointerEvent) => {
       const elementsMap = this.scene.getNonDeletedElementsMap();
 
@@ -11661,6 +11724,22 @@ class App extends React.Component<AppProps, AppState> {
         pointerDownState,
         childEvent,
       );
+
+      if (isAnnotation) {
+        this.annotationPointerId = null;
+        if (
+          childEvent.type === "pointerup" &&
+          this.state.activeTool.type === "annotation" &&
+          this.isToolSupported("annotation")
+        ) {
+          const point = viewportCoordsToSceneCoords(childEvent, this.state);
+          this.annotationTrails.addPointToPath(point.x, point.y);
+          this.annotationTrails.endPath();
+        } else {
+          this.annotationTrails.cancelPath();
+        }
+        return;
+      }
 
       if (newElement?.type === "freedraw") {
         const pointerCoords = viewportCoordsToSceneCoords(

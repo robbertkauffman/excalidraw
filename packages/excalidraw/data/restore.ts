@@ -223,6 +223,7 @@ export const AllowedExcalidrawActiveTools: Record<
   embeddable: true,
   hand: true,
   laser: false,
+  annotation: false,
   autoshape: false,
   magicframe: false,
   bucketfill: true,

@@ -406,6 +406,7 @@ export const actionLoadScene = register({
         appState: loadedAppState,
         files,
       } = await loadFromJSON(appState, elements);
+      app.annotationTrails.clear();
       return {
         elements: loadedElements,
         appState: loadedAppState,

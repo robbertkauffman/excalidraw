@@ -103,6 +103,7 @@ export class AppCursor {
     const theme =
       activeTool.type === "eraser" ||
       activeTool.type === "laser" ||
+      activeTool.type === "annotation" ||
       activeTool.type === "bucketfill"
         ? this.app.state.theme
         : undefined;
@@ -137,7 +138,10 @@ export class AppCursor {
       this.set(
         `url(${createBucketFillCursorDataURL(bucketFillColor!)}) 5 18, auto`,
       );
-    } else if (activeTool.type === "laser") {
+    } else if (
+      activeTool.type === "laser" ||
+      activeTool.type === "annotation"
+    ) {
       const url =
         this.app.state.theme === THEME.LIGHT
           ? laserPointerCursorDataURL_lightMode

@@ -54,6 +54,7 @@ import { ImageExportDialog } from "./ImageExportDialog";
 import { Island } from "./Island";
 import { JSONExportDialog } from "./JSONExportDialog";
 import { LaserPointerButton } from "./LaserPointerButton";
+import { AnnotationControls } from "./AnnotationControls";
 import { Toast } from "./Toast";
 import { Toolbar } from "./Toolbar";
 import {
@@ -312,6 +313,9 @@ const LayerUI = ({
             className={clsx("App-menu_top__left")}
           >
             {renderCanvasActions()}
+            {defaultUIEnabled && (
+              <AnnotationControls app={app} appState={appState} />
+            )}
             {defaultUIEnabled && (
               <div
                 className={clsx("selected-shape-actions-container", {

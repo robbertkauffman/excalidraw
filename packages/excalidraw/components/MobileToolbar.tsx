@@ -29,6 +29,7 @@ import {
   frameToolIcon,
   EmbedIcon,
   laserPointerToolIcon,
+  annotationToolIcon,
   drawShapeToolIcon,
   bucketFillIcon,
   mermaidLogoIcon,
@@ -117,6 +118,7 @@ export const MobileToolbar = ({ app, setAppState }: MobileToolbarProps) => {
       "frame",
       "embeddable",
       "laser",
+      "annotation",
       "bucketfill",
       "magicframe",
     ] as const
@@ -141,6 +143,8 @@ export const MobileToolbar = ({ app, setAppState }: MobileToolbarProps) => {
       ? EmbedIcon
       : activeTool.type === "laser"
       ? laserPointerToolIcon
+      : activeTool.type === "annotation"
+      ? annotationToolIcon
       : activeTool.type === "bucketfill"
       ? bucketFillIcon
       : activeTool.type === "magicframe"
@@ -318,6 +322,20 @@ export const MobileToolbar = ({ app, setAppState }: MobileToolbarProps) => {
             disabled={isToolButtonDisabled(app, "laser")}
           >
             {t("toolBar.laser")}
+          </DropdownMenu.Item>
+          <DropdownMenu.Item
+            onSelect={() => app.setActiveTool({ type: "annotation" })}
+            icon={annotationToolIcon}
+            data-testid="toolbar-annotation"
+            role="menuitemradio"
+            aria-checked={activeTool.type === "annotation"}
+            selected={activeTool.type === "annotation"}
+            disabled={
+              isToolButtonDisabled(app, "annotation") ||
+              !app.isToolSupported("annotation")
+            }
+          >
+            {t("toolBar.annotation")}
           </DropdownMenu.Item>
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "bucketfill" })}

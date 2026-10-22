@@ -9,6 +9,7 @@ import { SCROLLBAR_WIDTH, SCROLLBAR_MARGIN } from "../scene/scrollbars";
 
 import { ExitViewModeButton, MobileShapeActions } from "./Actions";
 import { MobileToolbar } from "./MobileToolbar";
+import { AnnotationControls } from "./AnnotationControls";
 import { FixedSideContainer } from "./FixedSideContainer";
 
 import { Island } from "./Island";
@@ -97,6 +98,9 @@ export const MobileMenu = ({
       <div className="excalidraw-ui-top-left">
         {renderTopLeftUI?.(true, appState)}
         <MainMenuTunnel.Out />
+        {defaultUIEnabled && (
+          <AnnotationControls app={app} appState={appState} />
+        )}
       </div>
     );
 
