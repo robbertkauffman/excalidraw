@@ -122,4 +122,29 @@ describe("shortcuts", () => {
       false,
     );
   });
+
+  it("Escape immediately after Delete should cancel and keep selection", async () => {
+    const rect1 = API.createElement({ type: "rectangle" });
+    const rect2 = API.createElement({ type: "rectangle", x: 100 });
+    await render(
+      <Excalidraw
+        initialData={{ elements: [rect1, rect2] }}
+        handleKeyboardGlobally
+      />,
+    );
+    API.setSelectedElements([rect1, rect2]);
+
+    Keyboard.keyDown(KEYS.DELETE);
+    expect(document.querySelector(".confirm-dialog")).not.toBe(null);
+    Keyboard.keyDown(KEYS.ESCAPE);
+
+    await waitFor(() => {
+      expect(document.querySelector(".confirm-dialog")).toBe(null);
+    });
+    expect(window.h.elements.every((el) => !el.isDeleted)).toBe(true);
+    expect(window.h.state.selectedElementIds).toEqual({
+      [rect1.id]: true,
+      [rect2.id]: true,
+    });
+  });
 });

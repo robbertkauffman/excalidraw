@@ -5349,6 +5349,18 @@ class App extends React.Component<AppProps, AppState> {
         });
       }
 
+      const activeConfirmDialog = editorJotaiStore.get(activeConfirmDialogAtom);
+      if (
+        event.key === KEYS.ESCAPE &&
+        activeConfirmDialog &&
+        activeConfirmDialog !== "clearCanvas" &&
+        activeConfirmDialog.editorId === this.id
+      ) {
+        event.preventDefault();
+        this.updateEditorAtom(activeConfirmDialogAtom, null);
+        return;
+      }
+
       if (!isInputLike(event.target)) {
         if (
           (event.key === KEYS.ESCAPE || event.key === KEYS.ENTER) &&
