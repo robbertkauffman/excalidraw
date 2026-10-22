@@ -26,6 +26,7 @@ import { CaptureUpdateAction } from "@excalidraw/element";
 import type { ExcalidrawElement } from "@excalidraw/element/types";
 
 import { t } from "../i18n";
+import { activeConfirmDialogAtom } from "../components/ActiveConfirmDialog";
 import { getSelectedElements, isSomeElementSelected } from "../scene";
 import { TrashIcon } from "../components/icons";
 import { IconButton } from "../components/IconButton";
@@ -205,7 +206,24 @@ const handleGroupEditingState = (
   return appState;
 };
 
-export const actionDeleteSelected = register({
+const requiresDeleteConfirmation = (
+  elements: readonly ExcalidrawElement[],
+  appState: AppState,
+) => {
+  const selectedElements = getSelectedElements(
+    getNonDeletedElements(elements),
+    appState,
+  );
+  return (
+    selectedElements.length > 1 ||
+    selectedElements.some((element) => isFrameLikeElement(element))
+  );
+};
+
+export const actionDeleteSelected = register<{
+  confirmed?: boolean;
+  selectedElementIds?: AppState["selectedElementIds"];
+} | null>({
   name: "deleteSelectedElements",
   label: "labels.delete",
   icon: TrashIcon,
@@ -269,6 +287,25 @@ export const actionDeleteSelected = register({
           },
         },
         captureUpdate: CaptureUpdateAction.IMMEDIATELY,
+      };
+    }
+
+    if (
+      !formData?.confirmed &&
+      requiresDeleteConfirmation(elements, appState)
+    ) {
+      app.updateEditorAtom(activeConfirmDialogAtom, {
+        type: "deleteSelection",
+        editorId: app.id,
+        selectedElementIds: appState.selectedElementIds,
+      });
+      return false;
+    }
+
+    if (formData?.selectedElementIds) {
+      appState = {
+        ...appState,
+        selectedElementIds: formData.selectedElementIds,
       };
     }
 

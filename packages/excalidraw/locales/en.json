@@ -265,6 +265,7 @@
   },
   "alerts": {
     "clearReset": "This will clear the whole canvas. Are you sure?",
+    "deleteSelection": "This will delete all selected elements. Are you sure?",
     "couldNotCreateShareableLink": "Couldn't create shareable link.",
     "couldNotCreateShareableLinkTooBig": "Couldn't create shareable link: the scene is too big",
     "couldNotLoadInvalidFile": "Couldn't load invalid file",
@@ -477,6 +478,9 @@
   },
   "clearCanvasDialog": {
     "title": "Clear canvas"
+  },
+  "deleteSelectionDialog": {
+    "title": "Delete selection"
   },
   "publishDialog": {
     "title": "Publish library",
