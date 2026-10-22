@@ -895,6 +895,9 @@ describe("history", () => {
 
       mouse.select([rect2, rect3]);
       Keyboard.keyDown(KEYS.DELETE);
+      fireEvent.click(
+        document.querySelector('.confirm-dialog [aria-label="Confirm"]')!,
+      );
 
       expect(API.getUndoStack().length).toBe(6);
 
@@ -1908,6 +1911,9 @@ describe("history", () => {
       it("should unbind rectangles from arrow on deletion and rebind on undo", async () => {
         mouse.select([rect1, rect2]);
         Keyboard.keyPress(KEYS.DELETE);
+        fireEvent.click(
+          document.querySelector('.confirm-dialog [aria-label="Confirm"]')!,
+        );
         expect(API.getUndoStack().length).toBe(8);
         expect(API.getRedoStack().length).toBe(0);
         expect(h.elements).toEqual([

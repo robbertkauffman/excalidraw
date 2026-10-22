@@ -116,7 +116,12 @@ export const actionCut = register<ClipboardEvent | null>({
   trackEvent: { category: "element" },
   perform: (elements, appState, event, app) => {
     actionCopy.perform(elements, appState, event, app);
-    return actionDeleteSelected.perform(elements, appState, null, app);
+    return actionDeleteSelected.perform(
+      elements,
+      appState,
+      { confirmed: true },
+      app,
+    );
   },
   keyTest: (event) => event[KEYS.CTRL_OR_CMD] && event.key === KEYS.X,
 });

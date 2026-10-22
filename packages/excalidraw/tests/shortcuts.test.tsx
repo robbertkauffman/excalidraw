@@ -31,4 +31,65 @@ describe("shortcuts", () => {
       expect(window.h.elements[0].isDeleted).toBe(true);
     });
   });
+
+  it("Deleting multiple elements should require confirmation", async () => {
+    const rect1 = API.createElement({ type: "rectangle" });
+    const rect2 = API.createElement({ type: "rectangle", x: 100 });
+    await render(
+      <Excalidraw
+        initialData={{ elements: [rect1, rect2] }}
+        handleKeyboardGlobally
+      />,
+    );
+    API.setSelectedElements([rect1, rect2]);
+
+    Keyboard.keyDown(KEYS.DELETE);
+    let confirmDialog = document.querySelector(".confirm-dialog")!;
+    expect(confirmDialog).not.toBe(null);
+
+    fireEvent.click(confirmDialog.querySelector('[aria-label="Cancel"]')!);
+    await waitFor(() => {
+      expect(document.querySelector(".confirm-dialog")).toBe(null);
+    });
+    expect(window.h.elements.every((el) => !el.isDeleted)).toBe(true);
+    expect(window.h.state.selectedElementIds).toEqual({
+      [rect1.id]: true,
+      [rect2.id]: true,
+    });
+
+    Keyboard.keyDown(KEYS.DELETE);
+    confirmDialog = document.querySelector(".confirm-dialog")!;
+    fireEvent.click(confirmDialog.querySelector('[aria-label="Confirm"]')!);
+    await waitFor(() => {
+      expect(window.h.elements.every((el) => el.isDeleted)).toBe(true);
+    });
+  });
+
+  it("Deleting a frame should require confirmation", async () => {
+    const frame = API.createElement({ type: "frame" });
+    await render(
+      <Excalidraw initialData={{ elements: [frame] }} handleKeyboardGlobally />,
+    );
+    API.setSelectedElements([frame]);
+
+    Keyboard.keyDown(KEYS.DELETE);
+    const confirmDialog = document.querySelector(".confirm-dialog")!;
+    expect(confirmDialog).not.toBe(null);
+    expect(window.h.elements[0].isDeleted).toBe(false);
+
+    fireEvent.click(confirmDialog.querySelector('[aria-label="Cancel"]')!);
+    expect(window.h.elements[0].isDeleted).toBe(false);
+  });
+
+  it("Deleting a single element should not require confirmation", async () => {
+    const rect = API.createElement({ type: "rectangle" });
+    await render(
+      <Excalidraw initialData={{ elements: [rect] }} handleKeyboardGlobally />,
+    );
+    API.setSelectedElements([rect]);
+
+    Keyboard.keyDown(KEYS.DELETE);
+    expect(document.querySelector(".confirm-dialog")).toBe(null);
+    expect(window.h.elements[0].isDeleted).toBe(true);
+  });
 });
