@@ -242,6 +242,7 @@ const CombinedShapeProperties = ({
       appState.activeTool.type !== "eraser" &&
       appState.activeTool.type !== "hand" &&
       appState.activeTool.type !== "laser" &&
+      appState.activeTool.type !== "annotation" &&
       appState.activeTool.type !== "lasso");
   const isOpen = appState.openPopup === "compactStrokeStyles";
 

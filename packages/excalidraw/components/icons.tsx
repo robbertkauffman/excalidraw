@@ -2033,6 +2033,13 @@ export const drawShapeToolIcon = createIcon(
   tablerIconProps,
 );
 
+export const annotationToolIcon = createIcon(
+  <g strokeWidth="1.5">
+    <path d="M4 17l1-4L16 2l4 4L9 17l-5 1zM13 5l4 4M3 22h18" />
+  </g>,
+  tablerIconProps,
+);
+
 export const laserPointerToolIcon = createIcon(
   <g
     fill="none"

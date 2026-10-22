@@ -94,6 +94,7 @@ export const actionClearCanvas = register({
     );
   },
   perform: (elements, appState, _, app) => {
+    app.annotationTrails.clear();
     app.imageCache.clear();
     return {
       elements: elements.map((element) =>

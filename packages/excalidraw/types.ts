@@ -161,6 +161,7 @@ export type ToolType =
   | "magicframe"
   | "embeddable"
   | "laser"
+  | "annotation"
   | "autoshape"
   | "bucketfill";
 
@@ -1131,6 +1132,7 @@ export type AppClassProperties = {
   drawShape: App["drawShape"];
   cursor: App["cursor"];
   bucketFill: App["bucketFill"];
+  annotationTrails: App["annotationTrails"];
   isToolLocked: App["isToolLocked"];
   getEffectiveGridSize: App["getEffectiveGridSize"];
   setPlugins: App["setPlugins"];
@@ -1154,6 +1156,7 @@ export type AppClassProperties = {
   setAppState: App["setAppState"];
 
   isInteractionEnabled: App["isInteractionEnabled"];
+  isToolSupported: App["isToolSupported"];
   isNavigationEnabled: App["isNavigationEnabled"];
 };
 
