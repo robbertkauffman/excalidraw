@@ -107,6 +107,39 @@ exports[`contextMenu element > right-clicking on a group should select whole gro
           "category": "element",
         },
       },
+      {
+        "PanelComponent": [Function],
+        "icon": <svg
+          aria-hidden="true"
+          className=""
+          fill="none"
+          focusable="false"
+          role="img"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 20 20"
+        >
+          <g
+            strokeWidth="1.25"
+          >
+            <path
+              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
+            />
+            <path
+              clipRule="evenodd"
+              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
+            />
+          </g>
+        </svg>,
+        "keyTest": [Function],
+        "label": "labels.duplicateSelection",
+        "name": "duplicateSelection",
+        "perform": [Function],
+        "trackEvent": {
+          "category": "element",
+        },
+      },
       "separator",
       {
         "label": "labels.selectAllElementsInFrame",
@@ -819,39 +852,6 @@ exports[`contextMenu element > right-clicking on a group should select whole gro
         },
       },
       "separator",
-      {
-        "PanelComponent": [Function],
-        "icon": <svg
-          aria-hidden="true"
-          className=""
-          fill="none"
-          focusable="false"
-          role="img"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          viewBox="0 0 20 20"
-        >
-          <g
-            strokeWidth="1.25"
-          >
-            <path
-              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
-            />
-            <path
-              clipRule="evenodd"
-              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
-            />
-          </g>
-        </svg>,
-        "keyTest": [Function],
-        "label": "labels.duplicateSelection",
-        "name": "duplicateSelection",
-        "perform": [Function],
-        "trackEvent": {
-          "category": "element",
-        },
-      },
       {
         "icon": [Function],
         "keyTest": [Function],
@@ -4830,6 +4830,39 @@ exports[`contextMenu element > shows 'Group selection' in context menu for multi
           "category": "element",
         },
       },
+      {
+        "PanelComponent": [Function],
+        "icon": <svg
+          aria-hidden="true"
+          className=""
+          fill="none"
+          focusable="false"
+          role="img"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 20 20"
+        >
+          <g
+            strokeWidth="1.25"
+          >
+            <path
+              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
+            />
+            <path
+              clipRule="evenodd"
+              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
+            />
+          </g>
+        </svg>,
+        "keyTest": [Function],
+        "label": "labels.duplicateSelection",
+        "name": "duplicateSelection",
+        "perform": [Function],
+        "trackEvent": {
+          "category": "element",
+        },
+      },
       "separator",
       {
         "label": "labels.selectAllElementsInFrame",
@@ -5542,39 +5575,6 @@ exports[`contextMenu element > shows 'Group selection' in context menu for multi
         },
       },
       "separator",
-      {
-        "PanelComponent": [Function],
-        "icon": <svg
-          aria-hidden="true"
-          className=""
-          fill="none"
-          focusable="false"
-          role="img"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          viewBox="0 0 20 20"
-        >
-          <g
-            strokeWidth="1.25"
-          >
-            <path
-              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
-            />
-            <path
-              clipRule="evenodd"
-              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
-            />
-          </g>
-        </svg>,
-        "keyTest": [Function],
-        "label": "labels.duplicateSelection",
-        "name": "duplicateSelection",
-        "perform": [Function],
-        "trackEvent": {
-          "category": "element",
-        },
-      },
       {
         "icon": [Function],
         "keyTest": [Function],
@@ -6053,6 +6053,39 @@ exports[`contextMenu element > shows 'Ungroup selection' in context menu for gro
           "category": "element",
         },
       },
+      {
+        "PanelComponent": [Function],
+        "icon": <svg
+          aria-hidden="true"
+          className=""
+          fill="none"
+          focusable="false"
+          role="img"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 20 20"
+        >
+          <g
+            strokeWidth="1.25"
+          >
+            <path
+              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
+            />
+            <path
+              clipRule="evenodd"
+              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
+            />
+          </g>
+        </svg>,
+        "keyTest": [Function],
+        "label": "labels.duplicateSelection",
+        "name": "duplicateSelection",
+        "perform": [Function],
+        "trackEvent": {
+          "category": "element",
+        },
+      },
       "separator",
       {
         "label": "labels.selectAllElementsInFrame",
@@ -6765,39 +6798,6 @@ exports[`contextMenu element > shows 'Ungroup selection' in context menu for gro
         },
       },
       "separator",
-      {
-        "PanelComponent": [Function],
-        "icon": <svg
-          aria-hidden="true"
-          className=""
-          fill="none"
-          focusable="false"
-          role="img"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          viewBox="0 0 20 20"
-        >
-          <g
-            strokeWidth="1.25"
-          >
-            <path
-              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
-            />
-            <path
-              clipRule="evenodd"
-              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
-            />
-          </g>
-        </svg>,
-        "keyTest": [Function],
-        "label": "labels.duplicateSelection",
-        "name": "duplicateSelection",
-        "perform": [Function],
-        "trackEvent": {
-          "category": "element",
-        },
-      },
       {
         "icon": [Function],
         "keyTest": [Function],
@@ -8022,6 +8022,39 @@ exports[`contextMenu element > shows context menu for element > [end of test] ap
           "category": "element",
         },
       },
+      {
+        "PanelComponent": [Function],
+        "icon": <svg
+          aria-hidden="true"
+          className=""
+          fill="none"
+          focusable="false"
+          role="img"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 20 20"
+        >
+          <g
+            strokeWidth="1.25"
+          >
+            <path
+              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
+            />
+            <path
+              clipRule="evenodd"
+              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
+            />
+          </g>
+        </svg>,
+        "keyTest": [Function],
+        "label": "labels.duplicateSelection",
+        "name": "duplicateSelection",
+        "perform": [Function],
+        "trackEvent": {
+          "category": "element",
+        },
+      },
       "separator",
       {
         "label": "labels.selectAllElementsInFrame",
@@ -8734,39 +8767,6 @@ exports[`contextMenu element > shows context menu for element > [end of test] ap
         },
       },
       "separator",
-      {
-        "PanelComponent": [Function],
-        "icon": <svg
-          aria-hidden="true"
-          className=""
-          fill="none"
-          focusable="false"
-          role="img"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          viewBox="0 0 20 20"
-        >
-          <g
-            strokeWidth="1.25"
-          >
-            <path
-              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
-            />
-            <path
-              clipRule="evenodd"
-              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
-            />
-          </g>
-        </svg>,
-        "keyTest": [Function],
-        "label": "labels.duplicateSelection",
-        "name": "duplicateSelection",
-        "perform": [Function],
-        "trackEvent": {
-          "category": "element",
-        },
-      },
       {
         "icon": [Function],
         "keyTest": [Function],
@@ -9019,6 +9019,39 @@ exports[`contextMenu element > shows context menu for element > [end of test] ap
           "category": "element",
         },
       },
+      {
+        "PanelComponent": [Function],
+        "icon": <svg
+          aria-hidden="true"
+          className=""
+          fill="none"
+          focusable="false"
+          role="img"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 20 20"
+        >
+          <g
+            strokeWidth="1.25"
+          >
+            <path
+              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
+            />
+            <path
+              clipRule="evenodd"
+              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
+            />
+          </g>
+        </svg>,
+        "keyTest": [Function],
+        "label": "labels.duplicateSelection",
+        "name": "duplicateSelection",
+        "perform": [Function],
+        "trackEvent": {
+          "category": "element",
+        },
+      },
       "separator",
       {
         "label": "labels.selectAllElementsInFrame",
@@ -9731,39 +9764,6 @@ exports[`contextMenu element > shows context menu for element > [end of test] ap
         },
       },
       "separator",
-      {
-        "PanelComponent": [Function],
-        "icon": <svg
-          aria-hidden="true"
-          className=""
-          fill="none"
-          focusable="false"
-          role="img"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          viewBox="0 0 20 20"
-        >
-          <g
-            strokeWidth="1.25"
-          >
-            <path
-              d="M14.375 6.458H8.958a2.5 2.5 0 0 0-2.5 2.5v5.417a2.5 2.5 0 0 0 2.5 2.5h5.417a2.5 2.5 0 0 0 2.5-2.5V8.958a2.5 2.5 0 0 0-2.5-2.5Z"
-            />
-            <path
-              clipRule="evenodd"
-              d="M11.667 3.125c.517 0 .986.21 1.325.55.34.338.55.807.55 1.325v1.458H8.333c-.485 0-.927.185-1.26.487-.343.312-.57.75-.609 1.24l-.005 5.357H5a1.87 1.87 0 0 1-1.326-.55 1.87 1.87 0 0 1-.549-1.325V5c0-.518.21-.987.55-1.326.338-.34.807-.549 1.325-.549h6.667Z"
-            />
-          </g>
-        </svg>,
-        "keyTest": [Function],
-        "label": "labels.duplicateSelection",
-        "name": "duplicateSelection",
-        "perform": [Function],
-        "trackEvent": {
-          "category": "element",
-        },
-      },
       {
         "icon": [Function],
         "keyTest": [Function],
