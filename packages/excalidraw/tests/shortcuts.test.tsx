@@ -92,4 +92,34 @@ describe("shortcuts", () => {
     expect(document.querySelector(".confirm-dialog")).toBe(null);
     expect(window.h.elements[0].isDeleted).toBe(true);
   });
+
+  it("Confirming deletion should only delete the selection that opened the dialog", async () => {
+    const rect1 = API.createElement({ type: "rectangle" });
+    const rect2 = API.createElement({ type: "rectangle", x: 100 });
+    const rect3 = API.createElement({ type: "rectangle", x: 200 });
+    await render(
+      <Excalidraw
+        initialData={{ elements: [rect1, rect2, rect3] }}
+        handleKeyboardGlobally
+      />,
+    );
+    API.setSelectedElements([rect1, rect2]);
+
+    Keyboard.keyDown(KEYS.DELETE);
+    API.setSelectedElements([rect1, rect2, rect3]);
+
+    const confirmDialog = document.querySelector(".confirm-dialog")!;
+    fireEvent.click(confirmDialog.querySelector('[aria-label="Confirm"]')!);
+    await waitFor(() => {
+      expect(
+        window.h.elements.find((el) => el.id === rect1.id)?.isDeleted,
+      ).toBe(true);
+    });
+    expect(window.h.elements.find((el) => el.id === rect2.id)?.isDeleted).toBe(
+      true,
+    );
+    expect(window.h.elements.find((el) => el.id === rect3.id)?.isDeleted).toBe(
+      false,
+    );
+  });
 });

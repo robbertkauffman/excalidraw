@@ -2,11 +2,20 @@ import { actionClearCanvas, actionDeleteSelected } from "../actions";
 import { atom, useAtom } from "../editor-jotai";
 import { t } from "../i18n";
 
-import { useExcalidrawActionManager } from "./App";
+import { useApp, useExcalidrawActionManager } from "./App";
+
 import ConfirmDialog from "./ConfirmDialog";
 
+import type { AppState } from "../types";
+
 export const activeConfirmDialogAtom = atom<
-  "clearCanvas" | "deleteSelection" | null
+  | "clearCanvas"
+  | {
+      type: "deleteSelection";
+      editorId: string;
+      selectedElementIds: AppState["selectedElementIds"];
+    }
+  | null
 >(null);
 
 export const ActiveConfirmDialog = () => {
@@ -14,6 +23,7 @@ export const ActiveConfirmDialog = () => {
     activeConfirmDialogAtom,
   );
   const actionManager = useExcalidrawActionManager();
+  const app = useApp();
 
   if (!activeConfirmDialog) {
     return null;
@@ -34,13 +44,17 @@ export const ActiveConfirmDialog = () => {
     );
   }
 
-  if (activeConfirmDialog === "deleteSelection") {
+  if (
+    activeConfirmDialog.type === "deleteSelection" &&
+    activeConfirmDialog.editorId === app.id
+  ) {
     return (
       <ConfirmDialog
         onConfirm={() => {
           setActiveConfirmDialog(null);
           actionManager.executeAction(actionDeleteSelected, "ui", {
             confirmed: true,
+            selectedElementIds: activeConfirmDialog.selectedElementIds,
           });
         }}
         onCancel={() => setActiveConfirmDialog(null)}

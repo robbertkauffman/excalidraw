@@ -26,7 +26,6 @@ import { CaptureUpdateAction } from "@excalidraw/element";
 import type { ExcalidrawElement } from "@excalidraw/element/types";
 
 import { t } from "../i18n";
-import { editorJotaiStore } from "../editor-jotai";
 import { activeConfirmDialogAtom } from "../components/ActiveConfirmDialog";
 import { getSelectedElements, isSomeElementSelected } from "../scene";
 import { TrashIcon } from "../components/icons";
@@ -221,7 +220,10 @@ const requiresDeleteConfirmation = (
   );
 };
 
-export const actionDeleteSelected = register<{ confirmed?: boolean } | null>({
+export const actionDeleteSelected = register<{
+  confirmed?: boolean;
+  selectedElementIds?: AppState["selectedElementIds"];
+} | null>({
   name: "deleteSelectedElements",
   label: "labels.delete",
   icon: TrashIcon,
@@ -292,8 +294,19 @@ export const actionDeleteSelected = register<{ confirmed?: boolean } | null>({
       !formData?.confirmed &&
       requiresDeleteConfirmation(elements, appState)
     ) {
-      editorJotaiStore.set(activeConfirmDialogAtom, "deleteSelection");
+      app.updateEditorAtom(activeConfirmDialogAtom, {
+        type: "deleteSelection",
+        editorId: app.id,
+        selectedElementIds: appState.selectedElementIds,
+      });
       return false;
+    }
+
+    if (formData?.selectedElementIds) {
+      appState = {
+        ...appState,
+        selectedElementIds: formData.selectedElementIds,
+      };
     }
 
     let { elements: nextElements, appState: nextAppState } =
