@@ -1918,6 +1918,7 @@ describe("tool locking & selection", () => {
         value !== "arrow" &&
         value !== "hand" &&
         value !== "laser" &&
+        value !== "annotation" &&
         // no top-level toolbar button (rendered in the extra-tools dropdown)
         value !== "frame" &&
         value !== "embeddable" &&

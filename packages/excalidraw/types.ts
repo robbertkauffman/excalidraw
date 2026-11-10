@@ -101,7 +101,12 @@ export type Collaborator = Readonly<{
 export type CollaboratorPointer = {
   x: number;
   y: number;
-  tool: "pointer" | "laser";
+  tool: "pointer" | "laser" | "annotation";
+  /**
+   * Incremented each time the user clears their annotations, so peers can
+   * drop that user's annotation strokes. Omitted until the first clear.
+   */
+  annotationClearCount?: number;
   /**
    * Whether to render cursor + username. Useful when you only want to render
    * laser trail.
@@ -167,6 +172,7 @@ export type ToolType =
   | "stickynote"
   | "embeddable"
   | "laser"
+  | "annotation"
   | "autoshape"
   | "bucketfill";
 
@@ -909,7 +915,12 @@ export interface ExcalidrawProps {
   onInitialize?: (api: ExcalidrawImperativeAPI) => void;
   isCollaborating?: boolean;
   onPointerUpdate?: (payload: {
-    pointer: { x: number; y: number; tool: "pointer" | "laser" };
+    pointer: {
+      x: number;
+      y: number;
+      tool: CollaboratorPointer["tool"];
+      annotationClearCount?: number;
+    };
     button: "down" | "up";
     pointersMap: Gesture["pointers"];
   }) => void;
@@ -1244,6 +1255,8 @@ export type AppClassProperties = {
   dismissLinearEditor: App["dismissLinearEditor"];
   flowchart: App["flowchart"];
   drawShape: App["drawShape"];
+  annotationTrails: App["annotationTrails"];
+  broadcastAnnotationsCleared: App["broadcastAnnotationsCleared"];
   arrowText: App["arrowText"];
   textTool: App["textTool"];
   cursor: App["cursor"];

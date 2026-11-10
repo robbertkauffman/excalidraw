@@ -20,6 +20,7 @@ import {
   ImageIcon,
   LassoIcon,
   laserPointerToolIcon,
+  annotationToolIcon,
   bucketFillIcon,
   MagicIcon,
   mermaidLogoIcon,
@@ -70,6 +71,7 @@ const ExtraToolsDropdown = ({
   const frameToolSelected = activeTool.type === "frame";
   const drawShapeToolSelected = activeTool.type === "autoshape";
   const laserToolSelected = activeTool.type === "laser";
+  const annotationToolSelected = activeTool.type === "annotation";
   const bucketFillToolSelected = activeTool.type === "bucketfill";
   const lassoToolSelected =
     isFullStylesPanel &&
@@ -88,6 +90,7 @@ const ExtraToolsDropdown = ({
             (isFullStylesPanel && drawShapeToolSelected) ||
             lassoToolSelected ||
             bucketFillToolSelected ||
+            annotationToolSelected ||
             // in collab we're already highlighting the laser button
             // outside toolbar, so let's not highlight extra-tools button
             // on top of it
@@ -109,6 +112,8 @@ const ExtraToolsDropdown = ({
           ? drawShapeToolIcon
           : laserToolSelected && !app.props.isCollaborating
           ? laserPointerToolIcon
+          : annotationToolSelected
+          ? annotationToolIcon
           : lassoToolSelected
           ? LassoIcon
           : bucketFillToolSelected
@@ -170,6 +175,16 @@ const ExtraToolsDropdown = ({
           disabled={isToolButtonDisabled(app, "laser")}
         >
           {t("toolBar.laser")}
+        </DropdownMenu.Item>
+        <DropdownMenu.Item
+          onSelect={() => app.setActiveTool({ type: "annotation" })}
+          icon={annotationToolIcon}
+          data-testid="toolbar-annotation"
+          selected={annotationToolSelected}
+          shortcut={getToolShortcut("annotation")}
+          disabled={isToolButtonDisabled(app, "annotation")}
+        >
+          {t("toolBar.annotation")}
         </DropdownMenu.Item>
         <DropdownMenu.Item
           onSelect={() => app.setActiveTool({ type: "bucketfill" })}

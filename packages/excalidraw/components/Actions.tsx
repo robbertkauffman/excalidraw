@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useRef } from "react";
 import { Popover } from "radix-ui";
 
-import { CLASSES } from "@excalidraw/common";
+import { CLASSES, isLaserLikeTool } from "@excalidraw/common";
 
 import { isArrowElement } from "@excalidraw/element";
 
@@ -234,7 +234,7 @@ const CombinedShapeProperties = ({
     (appState.activeTool.type !== "selection" &&
       appState.activeTool.type !== "eraser" &&
       appState.activeTool.type !== "hand" &&
-      appState.activeTool.type !== "laser" &&
+      !isLaserLikeTool(appState.activeTool.type) &&
       appState.activeTool.type !== "lasso");
   const isOpen = appState.openPopup === "compactStrokeStyles";
 

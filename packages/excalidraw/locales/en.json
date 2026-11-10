@@ -234,6 +234,7 @@
   },
   "buttons": {
     "clearReset": "Reset the canvas",
+    "clearAnnotations": "Clear annotations",
     "exportJSON": "Export to file",
     "exportImage": "Export image...",
     "export": "Save to...",
@@ -346,6 +347,7 @@
     "stickynote": "Sticky note",
     "embeddable": "Web Embed",
     "laser": "Laser pointer",
+    "annotation": "Annotation pen",
     "autoshape": "Draw to shape",
     "bucketfill": "Bucket fill",
     "hand": "Hand (panning tool)",
