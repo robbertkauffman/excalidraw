@@ -92,6 +92,7 @@ import {
   isSelectionLikeTool,
   oneOf,
   getStrokeWidthByKey,
+  escapeHTML,
 } from "@excalidraw/common";
 
 import {
@@ -420,7 +421,7 @@ import NewElementCanvas from "./canvases/NewElementCanvas";
 import { isPointHittingLink } from "./hyperlink/helpers";
 import { AppHost } from "./App.host";
 import { CursorHint, CursorHints } from "./CursorHint";
-import { MagicIcon, copyIcon, fullscreenIcon } from "./icons";
+import { MagicIcon, copyIcon, eyeIcon, fullscreenIcon } from "./icons";
 import { AppStateObserver, type OnStateChange } from "./AppStateObserver";
 
 import { findShapeByKey, TOGGLE_TOOLS } from "./Tools";
@@ -1859,9 +1860,28 @@ class App extends React.Component<AppProps, AppState> {
               src = {
                 intrinsicSize: { w: el.width, h: el.height },
                 type: "document",
-                srcdoc: () => {
-                  return html;
-                },
+                srcdoc: this.isMagicGenerationTrusted(el, data)
+                  ? () => html
+                  : () =>
+                      createSrcDoc(`
+                        <style>
+                          html, body {
+                            height: 100%;
+                          }
+                          body {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            text-align: center;
+                            font-family: sans-serif;
+                          }
+                        </style>
+                        <h3>Generated content hidden</h3>
+                        <p>Select this element and click "${escapeHTML(
+                          t("labels.showGeneratedContent"),
+                        )}" to render it.</p>
+                      `),
               } as const;
             } else if (data.status === "pending") {
               src = {
@@ -1889,6 +1909,7 @@ class App extends React.Component<AppProps, AppState> {
                       const onPartialMessage = (event) => {
                         const data = event.data;
                         if (
+                          event.source !== window.parent ||
                           !data ||
                           data.type !== "excalidraw:diagramToCode:partial" ||
                           typeof data.html !== "string" ||
@@ -1942,7 +1963,7 @@ class App extends React.Component<AppProps, AppState> {
                       }
                     </style>
                     <h1>Error!</h1>
-                    <h3>${message}</h3>
+                    <h3>${escapeHTML(String(message))}</h3>
                   `);
                 },
               } as const;
@@ -2562,6 +2583,22 @@ class App extends React.Component<AppProps, AppState> {
                                 element={firstSelectedElement}
                                 elementsMap={renderableElementsMap}
                               >
+                                {!this.isMagicGenerationTrusted(
+                                  firstSelectedElement,
+                                  firstSelectedElement.customData
+                                    .generationData,
+                                ) && (
+                                  <ElementCanvasButton
+                                    title={t("labels.showGeneratedContent")}
+                                    icon={eyeIcon}
+                                    checked={false}
+                                    onChange={() =>
+                                      this.trustMagicGeneration(
+                                        firstSelectedElement,
+                                      )
+                                    }
+                                  />
+                                )}
                                 <ElementCanvasButton
                                   title={t("labels.copySource")}
                                   icon={copyIcon}
@@ -2820,6 +2857,35 @@ class App extends React.Component<AppProps, AppState> {
     MagicGenerationData
   >();
 
+  /**
+   * Generated HTML is rendered only if it was generated in this editor
+   * session, or the user explicitly chose to show it. Scenes from elsewhere
+   * (share links, files, collab, libraries) may carry arbitrary HTML.
+   */
+  private trustedMagicGenerations = new Map<
+    ExcalidrawIframeElement["id"],
+    string
+  >();
+
+  private isMagicGenerationTrusted(
+    element: ExcalidrawIframeElement,
+    data: MagicGenerationData,
+  ): boolean {
+    return (
+      data.status === "done" &&
+      typeof data.html === "string" &&
+      this.trustedMagicGenerations.get(element.id) === data.html
+    );
+  }
+
+  private trustMagicGeneration(element: ExcalidrawIframeElement) {
+    const data = element.customData?.generationData;
+    if (data?.status === "done" && typeof data.html === "string") {
+      this.trustedMagicGenerations.set(element.id, data.html);
+      this.triggerRender();
+    }
+  }
+
   private updateMagicGeneration = ({
     frameElement,
     data,
@@ -2847,6 +2913,9 @@ class App extends React.Component<AppProps, AppState> {
         },
         { informMutation: false, isDragging: false },
       );
+    }
+    if (data.status === "done") {
+      this.trustedMagicGenerations.set(frameElement.id, data.html);
     }
     this.magicGenerations.set(frameElement.id, data);
     this.triggerRender();

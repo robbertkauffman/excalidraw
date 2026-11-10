@@ -1163,6 +1163,15 @@ export const escapeDoubleQuotes = (str: string) => {
   return str.replace(/"/g, "&quot;");
 };
 
+export const escapeHTML = (str: string) => {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+};
+
 export const castArray = <T>(value: T | T[]): T[] =>
   Array.isArray(value) ? value : [value];
 
