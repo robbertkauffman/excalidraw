@@ -21,6 +21,7 @@
     "copyAsSvg": "Copy to clipboard as SVG",
     "copyText": "Copy to clipboard as text",
     "copySource": "Copy source to clipboard",
+    "showGeneratedContent": "Show generated content",
     "convertToCode": "Convert to code",
     "bringForward": "Bring forward",
     "sendToBack": "Send to back",
