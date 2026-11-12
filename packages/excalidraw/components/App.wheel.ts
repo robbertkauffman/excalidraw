@@ -31,7 +31,7 @@ export class AppWheel {
       event.target instanceof ownerWindow.HTMLTextAreaElement ||
       event.target instanceof ownerWindow.HTMLIFrameElement ||
       (event.target instanceof ownerWindow.HTMLElement &&
-        event.target.classList.contains(CLASSES.FRAME_NAME))
+        event.target.closest(`.${CLASSES.FRAME_NAME}`))
     );
   };
 
