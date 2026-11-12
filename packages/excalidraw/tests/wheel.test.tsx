@@ -413,14 +413,14 @@ describe("wheel navigation", () => {
 });
 
 describe("wheel over a frame label", () => {
+  let label: HTMLElement;
+
   beforeEach(async () => {
     // frame labels render only for frames inside the measured viewport
     mockBoundingClientRect();
     await render(<Excalidraw />);
     await waitFor(() => expect(h.state.width).toBe(200));
-  });
 
-  it("is handled once", async () => {
     const frame = API.createElement({
       type: "frame",
       x: 20,
@@ -429,12 +429,14 @@ describe("wheel over a frame label", () => {
       height: 50,
     });
     API.setElements([frame]);
-    const label = await waitFor(() => {
+    label = await waitFor(() => {
       const element = document.querySelector(`.${CLASSES.FRAME_NAME}`);
       expect(element).not.toBe(null);
       return element as HTMLElement;
     });
+  });
 
+  it("is handled once", () => {
     // the label is DOM inside the editor container, whose wheel listener
     // accepts it; a React `onWheel` on the label itself used to handle the
     // same event a second time, panning and zooming twice per tick
@@ -442,4 +444,61 @@ describe("wheel over a frame label", () => {
     fireEvent.wheel(label, { deltaY: 40 });
     expect(h.state.scrollY).toBeCloseTo(start.scrollY - 40 / start.zoom);
   });
+
+  it.each([
+    {
+      name: "pans on plain wheel",
+      inputDevice: "trackpad",
+      modifiers: {},
+      zoom: false,
+    },
+    {
+      name: "zooms on ctrl+wheel",
+      inputDevice: "trackpad",
+      modifiers: { ctrlKey: true },
+      zoom: true,
+    },
+    {
+      name: "zooms on cmd+wheel",
+      inputDevice: "trackpad",
+      modifiers: { metaKey: true },
+      zoom: true,
+    },
+    {
+      name: "zooms on plain wheel with mouse input",
+      inputDevice: "mouse",
+      modifiers: {},
+      zoom: true,
+    },
+  ] as const)(
+    "$name while renaming",
+    async ({ inputDevice, modifiers, zoom }) => {
+      API.setAppState({ inputDevice });
+      fireEvent.doubleClick(label);
+      const input = await waitFor(() => {
+        const element = label.querySelector("input");
+        expect(element).not.toBe(null);
+        return element!;
+      });
+      fireEvent.change(input, { target: { value: "Renaming frame" } });
+      const editingFrame = h.state.editingFrame;
+      expect(editingFrame).not.toBe(null);
+      expect(input).toHaveFocus();
+
+      const start = getViewport();
+      expect(fireEvent.wheel(input, { deltaY: -10, ...modifiers })).toBe(false);
+
+      if (zoom) {
+        expect(h.state.zoom.value).toBeGreaterThan(start.zoom);
+      } else {
+        expect(getViewport()).toEqual({
+          ...start,
+          scrollY: start.scrollY + 10 / start.zoom,
+        });
+      }
+      expect(h.state.editingFrame).toBe(editingFrame);
+      expect(input).toHaveFocus();
+      expect(input).toHaveValue("Renaming frame");
+    },
+  );
 });
