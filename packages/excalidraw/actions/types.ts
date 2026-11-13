@@ -118,6 +118,7 @@ export type ActionName =
   | "flipVertical"
   | "deselect"
   | "viewMode"
+  | "clearAnnotations"
   | "exportWithDarkMode"
   | "toggleTheme"
   | "increaseFontSize"

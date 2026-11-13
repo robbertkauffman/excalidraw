@@ -1,3 +1,5 @@
+import { isLaserLikeTool } from "@excalidraw/common";
+
 import type { UIAppState } from "@excalidraw/excalidraw/types";
 
 import { getSelectedElements } from "./selection";
@@ -17,6 +19,6 @@ export const showSelectedShapeActions = (
             appState.activeTool.type !== "lasso" &&
             appState.activeTool.type !== "eraser" &&
             appState.activeTool.type !== "hand" &&
-            appState.activeTool.type !== "laser"))) ||
+            !isLaserLikeTool(appState.activeTool.type)))) ||
         getSelectedElements(elements, appState).length),
   );

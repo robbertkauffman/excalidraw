@@ -3,10 +3,15 @@ import clsx from "clsx";
 
 import { KEYS, capitalizeString } from "@excalidraw/common";
 
+import { actionClearAnnotations } from "../actions";
+import { annotationsPresentAtom } from "../annotationTrails";
+import { useAtomValue } from "../editor-jotai";
 import { t } from "../i18n";
+import { getShortcutKey } from "../shortcut";
 
 import { useTunnels } from "../context/tunnels";
 
+import { useExcalidrawActionManager } from "./App";
 import DropdownMenu from "./dropdownMenu/DropdownMenu";
 import { ToolPopover } from "./ToolPopover";
 import {
@@ -29,6 +34,8 @@ import {
   frameToolIcon,
   EmbedIcon,
   laserPointerToolIcon,
+  annotationToolIcon,
+  TrashIcon,
   drawShapeToolIcon,
   bucketFillIcon,
   mermaidLogoIcon,
@@ -77,6 +84,9 @@ export const MobileToolbar = ({ app, setAppState }: MobileToolbarProps) => {
   const frameToolSelected = activeTool.type === "frame";
   const drawShapeToolSelected = activeTool.type === "autoshape";
   const laserToolSelected = activeTool.type === "laser";
+  const annotationToolSelected = activeTool.type === "annotation";
+  const annotationsPresent = useAtomValue(annotationsPresentAtom);
+  const actionManager = useExcalidrawActionManager();
   const embeddableToolSelected = activeTool.type === "embeddable";
   const bucketFillToolSelected = activeTool.type === "bucketfill";
   const stickyNoteToolSelected = activeTool.type === "stickynote";
@@ -120,6 +130,7 @@ export const MobileToolbar = ({ app, setAppState }: MobileToolbarProps) => {
       "frame",
       "embeddable",
       "laser",
+      "annotation",
       "bucketfill",
       "magicframe",
     ] as const
@@ -146,6 +157,8 @@ export const MobileToolbar = ({ app, setAppState }: MobileToolbarProps) => {
       ? EmbedIcon
       : activeTool.type === "laser"
       ? laserPointerToolIcon
+      : activeTool.type === "annotation"
+      ? annotationToolIcon
       : activeTool.type === "bucketfill"
       ? bucketFillIcon
       : activeTool.type === "magicframe"
@@ -335,6 +348,28 @@ export const MobileToolbar = ({ app, setAppState }: MobileToolbarProps) => {
           >
             {t("toolBar.laser")}
           </DropdownMenu.Item>
+          <DropdownMenu.Item
+            onSelect={() => app.setActiveTool({ type: "annotation" })}
+            icon={annotationToolIcon}
+            data-testid="toolbar-annotation"
+            selected={annotationToolSelected}
+            shortcut={getToolShortcut("annotation")}
+            disabled={isToolButtonDisabled(app, "annotation")}
+          >
+            {t("toolBar.annotation")}
+          </DropdownMenu.Item>
+          {annotationsPresent && (
+            <DropdownMenu.Item
+              onSelect={() =>
+                actionManager.executeAction(actionClearAnnotations)
+              }
+              icon={TrashIcon}
+              data-testid="toolbar-clear-annotations"
+              shortcut={getShortcutKey("Alt+K")}
+            >
+              {t("buttons.clearAnnotations")}
+            </DropdownMenu.Item>
+          )}
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "bucketfill" })}
             icon={bucketFillIcon}

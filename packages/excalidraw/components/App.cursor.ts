@@ -1,4 +1,10 @@
-import { CURSOR_TYPE, KEYS, MIME_TYPES, THEME } from "@excalidraw/common";
+import {
+  CURSOR_TYPE,
+  KEYS,
+  MIME_TYPES,
+  THEME,
+  isLaserLikeTool,
+} from "@excalidraw/common";
 
 import { isHandToolActive, isEraserActive } from "../appState";
 
@@ -102,7 +108,7 @@ export class AppCursor {
 
     const theme =
       activeTool.type === "eraser" ||
-      activeTool.type === "laser" ||
+      isLaserLikeTool(activeTool.type) ||
       activeTool.type === "bucketfill"
         ? this.app.state.theme
         : undefined;
@@ -137,7 +143,7 @@ export class AppCursor {
       this.set(
         `url(${createBucketFillCursorDataURL(bucketFillColor!)}) 5 18, auto`,
       );
-    } else if (activeTool.type === "laser") {
+    } else if (isLaserLikeTool(activeTool.type)) {
       const url =
         this.app.state.theme === THEME.LIGHT
           ? laserPointerCursorDataURL_lightMode

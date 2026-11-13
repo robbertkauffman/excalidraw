@@ -13,6 +13,12 @@ Please add the latest change on the top under the correct section.
 
 ## Unreleased
 
+### Annotation pen (2026-11-10)
+
+- New annotation pen tool (`activeTool.type: "annotation"`, `Shift+K`, in the extra-tools menu and command palette). Its strokes look like the laser pointer's but don't fade: they stay on screen, follow the canvas when panning or zooming, and survive tool switches and view-mode toggles until cleared. They're a temporary overlay, not scene elements, so they aren't saved, exported or part of the undo history. Works in view mode, like the laser. The laser pointer (`K`) is unchanged.
+- New `clearAnnotations` action ("Clear annotations", `Alt+K`, the command palette, and a floating button shown while annotations exist) clears all annotations at once.
+- `CollaboratorPointer.tool` now also accepts `"annotation"`, and `CollaboratorPointer` has an optional `annotationClearCount`, bumped each time a user clears their annotations so peers drop that user's strokes. Collaborators see each other's annotations like laser trails; older clients ignore them. Host apps switching exhaustively over `CollaboratorPointer.tool` need to handle the new value.
+
 ### Arrows aren't clipped to frames (2026-10-31) [#12516](https://github.com/excalidraw/excalidraw/pull/12516)
 
 - Arrows and their labels are no longer clipped to the frame they belong to, so they can connect elements across and out of frames, and their part outside the frame can be selected. They still belong to their frame, so they're moved, copied and deleted with it, but only while one of their ends is in it (bound to an element in the frame, or inside it). An arrow whose ends both leave its frame (moved, bound to elements outside it, or with the elements it's bound to) leaves the frame.

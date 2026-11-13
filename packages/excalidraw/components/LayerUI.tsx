@@ -18,7 +18,9 @@ import { ShapeCache } from "@excalidraw/element";
 
 import type { NonDeletedExcalidrawElement } from "@excalidraw/element/types";
 
-import { actionToggleStats } from "../actions";
+import { actionClearAnnotations, actionToggleStats } from "../actions";
+import { getShortcutFromShortcutName } from "../actions/shortcuts";
+import { annotationsPresentAtom } from "../annotationTrails";
 import { trackEvent } from "../analytics";
 import { TunnelsContext, useInitializeTunnels } from "../context/tunnels";
 import { UIAppStateContext } from "../context/ui-appState";
@@ -46,7 +48,7 @@ import MainMenu from "./main-menu/MainMenu";
 import { ActiveConfirmDialog } from "./ActiveConfirmDialog";
 import { useAppProps, useEditorInterface, useStylesPanelMode } from "./App";
 import { OverwriteConfirmDialog } from "./OverwriteConfirm/OverwriteConfirm";
-import { sidebarRightIcon } from "./icons";
+import { sidebarRightIcon, TrashIcon } from "./icons";
 import { DefaultSidebar } from "./DefaultSidebar";
 import { TTDDialog } from "./TTDDialog/TTDDialog";
 import { Stats } from "./Stats";
@@ -61,6 +63,7 @@ import { JSONExportDialog } from "./JSONExportDialog";
 import { LaserPointerButton } from "./LaserPointerButton";
 import { Toast } from "./Toast";
 import { Toolbar } from "./Toolbar";
+import { IconButton } from "./IconButton";
 import {
   ViewportStatusBadge,
   ViewportStatusBorder,
@@ -174,6 +177,7 @@ const LayerUI = ({
   const stylesPanelMode = useStylesPanelMode();
   const isCompactStylesPanel = stylesPanelMode === "compact";
   const tunnels = useInitializeTunnels();
+  const annotationsPresent = useAtomValue(annotationsPresentAtom);
 
   const spacing = isCompactStylesPanel
     ? {
@@ -388,6 +392,34 @@ const LayerUI = ({
                                 app.setActiveTool({ type: TOOL_TYPE.laser })
                               }
                               isMobile
+                            />
+                          </Island>
+                        )}
+                        {annotationsPresent && (
+                          <Island
+                            style={{
+                              marginLeft: spacing.collabMarginLeft,
+                              alignSelf: "center",
+                              height: "fit-content",
+                            }}
+                          >
+                            <IconButton
+                              type="button"
+                              className="ToolIcon__ClearAnnotations is-mobile"
+                              icon={TrashIcon}
+                              title={`${t(
+                                "buttons.clearAnnotations",
+                              )} — ${getShortcutFromShortcutName(
+                                "clearAnnotations",
+                              )}`}
+                              aria-label={t("buttons.clearAnnotations")}
+                              data-testid="clear-annotations-button"
+                              onClick={() =>
+                                actionManager.executeAction(
+                                  actionClearAnnotations,
+                                )
+                              }
+                              size="small"
                             />
                           </Island>
                         )}

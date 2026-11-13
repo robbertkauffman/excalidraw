@@ -2063,6 +2063,20 @@ export const laserPointerToolIcon = createIcon(
   20,
 );
 
+export const annotationToolIcon = createIcon(
+  <g
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12.5 4.167 15.833 7.5M3.333 16.667h3.334l8.75-8.75a2.357 2.357 0 0 0-3.334-3.334l-8.75 8.75v3.334Z" />
+    <path d="M10 16.667c1.667-1.25 3.333-1.25 5 0s2.5 1.25 2.5 0" />
+  </g>,
+  20,
+);
+
 export const MagicIcon = createIcon(
   <g stroke="currentColor" fill="none">
     <path stroke="none" d="M0 0h24v24H0z" />

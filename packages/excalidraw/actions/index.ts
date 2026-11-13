@@ -79,6 +79,7 @@ export {
 
 export { actionToggleGridMode } from "./actionToggleGridMode";
 export { actionToggleZenMode } from "./actionToggleZenMode";
+export { actionClearAnnotations } from "./actionClearAnnotations";
 export { actionToggleObjectsSnapMode } from "./actionToggleObjectsSnapMode";
 export { actionToggleArrowBinding } from "./actionToggleArrowBinding";
 export { actionToggleMidpointSnapping } from "./actionToggleMidpointSnapping";

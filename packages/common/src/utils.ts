@@ -294,6 +294,11 @@ export const isSelectionLikeTool = (type: ToolType | "custom") => {
   return type === "selection" || type === "lasso";
 };
 
+/** presentation tools that draw a temporary, non-element overlay */
+export const isLaserLikeTool = (type: ToolType | "custom") => {
+  return type === "laser" || type === "annotation";
+};
+
 export const updateActiveTool = (
   appState: Pick<AppState, "activeTool">,
   data: ((

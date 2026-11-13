@@ -567,6 +567,7 @@ export const TOOL_TYPE = {
   stickynote: "stickynote",
   embeddable: "embeddable",
   laser: "laser",
+  annotation: "annotation",
   autoshape: "autoshape",
   bucketfill: "bucketfill",
 } as const;

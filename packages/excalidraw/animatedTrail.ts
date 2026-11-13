@@ -25,6 +25,12 @@ export interface AnimatedTrailOptions {
   fill: (trail: AnimatedTrail) => string;
   stroke?: (trail: AnimatedTrail) => string;
   animateTrail?: boolean;
+  /**
+   * Keep finished trails rendered until explicitly cleared. The animation
+   * loop then only runs while a trail is being drawn, so viewport changes
+   * must be followed by `redraw()`.
+   */
+  persistent?: boolean;
 }
 
 export class AnimatedTrail implements Trail {
@@ -60,6 +66,10 @@ export class AnimatedTrail implements Trail {
 
   get hasCurrentTrail() {
     return !!this.currentTrail;
+  }
+
+  get hasTrails() {
+    return this.pastTrails.length > 0 || !!this.currentTrail;
   }
 
   hasLastPoint(x: number, y: number) {
@@ -101,6 +111,10 @@ export class AnimatedTrail implements Trail {
             return { keep: true };
           }
 
+          if (this.options.persistent && this.hasTrails) {
+            return null;
+          }
+
           this.cleanup();
 
           return null;
@@ -140,6 +154,11 @@ export class AnimatedTrail implements Trail {
     }
   }
 
+  /** re-render all trails once (e.g. after the viewport changed) */
+  redraw() {
+    this.start();
+  }
+
   getCurrentTrail() {
     return this.currentTrail;
   }
@@ -170,11 +189,13 @@ export class AnimatedTrail implements Trail {
       paths.push(currentPath);
     }
 
-    this.pastTrails = this.pastTrails.filter(
-      (t) =>
-        t.getStrokeOutline(t.options.size / this.app.state.zoom.value)
-          .length !== 0,
-    );
+    if (!this.options.persistent) {
+      this.pastTrails = this.pastTrails.filter(
+        (t) =>
+          t.getStrokeOutline(t.options.size / this.app.state.zoom.value)
+            .length !== 0,
+      );
+    }
 
     if (paths.length === 0) {
       // Clean up the SVG path if there are no trails to render
@@ -200,6 +221,10 @@ export class AnimatedTrail implements Trail {
         "fill",
         (this.options.fill ?? (() => "black"))(this),
       );
+    }
+
+    if (this.options.persistent) {
+      return !!this.currentTrail;
     }
 
     return true;

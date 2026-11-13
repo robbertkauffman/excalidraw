@@ -367,6 +367,7 @@ function CommandPaletteInner({
         actionManager.actions.zoomToFit,
         actionManager.actions.zenMode,
         actionManager.actions.viewMode,
+        actionManager.actions.clearAnnotations,
         actionManager.actions.gridMode,
         actionManager.actions.objectsSnapMode,
         actionManager.actions.showHints,
